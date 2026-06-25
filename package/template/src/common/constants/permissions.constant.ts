@@ -1,0 +1,27 @@
+export const PERMISSIONS = {
+  // User Management
+  USER: {
+    VIEW: 'VIEW_USER',
+    ADD: 'ADD_USER',
+    UPDATE: 'UPDATE_USER',
+    DELETE: 'DELETE_USER',
+    MANAGE_PERMISSION: 'MANAGE_USER_PERMISSION',
+    CHANGE_POSITION: 'CHANGE_USER_POSITION',
+  },
+
+  // Position Management
+  POSITION: {
+    VIEW: 'VIEW_POSITION',
+    ADD: 'ADD_POSITION',
+    UPDATE: 'UPDATE_POSITION',
+    DELETE: 'DELETE_POSITION',
+  },
+
+  // Permission Management
+  PERMISSION: {
+    VIEW: 'VIEW_PERMISSION',
+    ADD: 'ADD_PERMISSION',
+    UPDATE: 'UPDATE_PERMISSION',
+    DELETE: 'DELETE_PERMISSION',
+  },
+} as const;
