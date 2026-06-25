@@ -112,14 +112,42 @@ async function run() {
     envSpinner.fail('Failed to configure .env file.');
   }
   
-  // 4. Initialize Git
+  // 4. Update package.json & README.md
+  const configSpinner = ora('Configuring project details...').start();
+  try {
+    const finalProjectName = projectName === '.' ? path.basename(currentPath) : projectName;
+    
+    // Update package.json
+    const pkgPath = path.join(projectPath, 'package.json');
+    if (fs.existsSync(pkgPath)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+      pkg.name = finalProjectName;
+      pkg.description = `${finalProjectName} Application`;
+      fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+    }
+
+    // Update README.md
+    const readmePath = path.join(projectPath, 'README.md');
+    if (fs.existsSync(readmePath)) {
+      let readmeContent = fs.readFileSync(readmePath, 'utf-8');
+      readmeContent = readmeContent.replace(/<h1>🏗 Kuli Digital NestJS Backend<\/h1>/g, `<h1>🏗 ${finalProjectName} Backend</h1>`);
+      readmeContent = readmeContent.replace(/<p>The standard backend application architecture built with NestJS following the <b>Kuli Digital Standardization Manual<\/b>\.<\/p>/g, `<p>Backend application for ${finalProjectName}.</p>`);
+      fs.writeFileSync(readmePath, readmeContent);
+    }
+    
+    configSpinner.succeed('Project details configured successfully.');
+  } catch (error) {
+    configSpinner.fail('Failed to configure project details.');
+  }
+
+  // 5. Initialize Git
   try {
     execSync('git init', { stdio: 'ignore' });
   } catch (e) {
     // Ignore if git is not installed
   }
 
-  // 5. Install Dependencies
+  // 6. Install Dependencies
   if (!answers.skipInstall) {
     const installSpinner = ora(`Installing dependencies using npm... (this may take a few minutes)`).start();
     try {
@@ -131,7 +159,7 @@ async function run() {
     }
   }
 
-  // 6. Success Message
+  // 7. Success Message
   console.log(chalk.green.bold('\n✅ Project successfully created!\n'));
   console.log(chalk.white('Next steps:'));
   
