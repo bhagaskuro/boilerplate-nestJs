@@ -47,7 +47,7 @@ npx prisma generate
 npx prisma migrate dev
 
 # Seed the database with default roles and users
-npx prisma db seed
+npm run prisma:seed
 ```
 
 ## 💻 Running the Application
@@ -97,7 +97,7 @@ Once the application is running, you can access the Swagger UI documentation at:
 
 ## 👥 Default Seeded Users
 
-If you ran `npx prisma db seed`, you can log in with the following default credentials:
+If you ran `npm run prisma:seed`, you can log in with the following default credentials:
 
 **👑 Admin User:**
 - Email: `admin@kulidigital.com`

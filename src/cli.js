@@ -183,7 +183,7 @@ async function run() {
   }
   
   console.log(chalk.cyan(`  npx prisma migrate dev`));
-  console.log(chalk.cyan(`  npx prisma db seed`));
+  console.log(chalk.cyan(`  npm run prisma:seed`));
   console.log(chalk.cyan(`  npm run start:dev\n`));
   console.log(chalk.gray(`Happy Coding! - Kuli Digital\n`));
 }
