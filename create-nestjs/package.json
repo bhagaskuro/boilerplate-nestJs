@@ -1,0 +1,29 @@
+{
+  "name": "@kuldi/create-nestjs",
+  "version": "1.0.0",
+  "description": "Scaffolding tool for Kuli Digital NestJS Boilerplate",
+  "main": "bin/cli.js",
+  "bin": {
+    "create-nestjs": "./bin/cli.js",
+    "@kuldi/create-nestjs": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bhagaskuro/boilerplate-nestJs.git"
+  },
+  "keywords": [
+    "nestjs",
+    "boilerplate",
+    "kuli-digital",
+    "cli",
+    "create-nestjs"
+  ],
+  "author": "Kuli Digital",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
