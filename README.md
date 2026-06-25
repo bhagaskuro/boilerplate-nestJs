@@ -1,5 +1,9 @@
 <div align="center">
   <h1>🚀 @kuldi/create-nestjs</h1>
+  <p>
+    <a href="https://www.npmjs.com/package/@kuldi/create-nestjs"><img src="https://img.shields.io/npm/v/@kuldi/create-nestjs.svg?style=flat-square" alt="NPM Version" /></a>
+    <a href="https://www.npmjs.com/package/@kuldi/create-nestjs"><img src="https://img.shields.io/npm/dt/@kuldi/create-nestjs.svg?style=flat-square" alt="NPM Downloads" /></a>
+  </p>
   <p>The official, interactive, and lightning-fast scaffolding tool for <b>Kuli Digital's NestJS Boilerplate</b>.</p>
 </div>
 
