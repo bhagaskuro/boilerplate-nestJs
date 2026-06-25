@@ -26,7 +26,7 @@ npm create @kuldi/nestjs@latest my-app
 Or, to create the project in your **current directory**:
 
 ```bash
-npm create @kuldi/nestjs .
+npm create @kuldi/nestjs@latest .
 ```
 
 ### Note on Global Installations (Optional)
