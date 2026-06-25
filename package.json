@@ -1,6 +1,6 @@
 {
   "name": "@kuldi/create-nestjs",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "type": "module",
   "description": "Scaffolding tool for Kuli Digital NestJS Boilerplate",
   "main": "src/cli.js",

@@ -45,12 +45,23 @@ async function run() {
   const projectName = argProjectName || answers.projectName;
   const projectPath = projectName === '.' ? currentPath : path.join(currentPath, projectName);
 
-  // Mengecek apakah target directory kosong
-  if (projectName === '.') {
-    const files = fs.readdirSync(currentPath).filter(f => !f.startsWith('.git'));
+  // Check if target directory is empty
+  if (fs.existsSync(projectPath)) {
+    const files = fs.readdirSync(projectPath).filter(f => !f.startsWith('.git'));
     if (files.length > 0) {
-      console.log(chalk.red('\n❌ Current directory is not empty! Please run in an empty directory.\n'));
-      process.exit(1);
+      const { overwrite } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'overwrite',
+          message: 'Directory is not empty. Do you want to continue? (This will overwrite existing files)',
+          default: false,
+        }
+      ]);
+
+      if (!overwrite) {
+        console.log(chalk.yellow('\n⚠️ Setup cancelled.\n'));
+        process.exit(0);
+      }
     }
   }
 
