@@ -24,7 +24,7 @@ async function run() {
     {
       type: 'input',
       name: 'projectName',
-      message: 'Project Name (or . for current directory):',
+      message: 'Project Name:',
       default: argProjectName === '.' ? '.' : (argProjectName || 'my-nestjs-app'),
     }
   ]);
@@ -133,6 +133,15 @@ async function run() {
       readmeContent = readmeContent.replace(/<h1>🏗 Kuli Digital NestJS Backend<\/h1>/g, `<h1>🏗 ${finalProjectName} Backend</h1>`);
       readmeContent = readmeContent.replace(/<p>The standard backend application architecture built with NestJS following the <b>Kuli Digital Standardization Manual<\/b>\.<\/p>/g, `<p>Backend application for ${finalProjectName}.</p>`);
       fs.writeFileSync(readmePath, readmeContent);
+    }
+
+    // Update Swagger config in main.ts
+    const mainTsPath = path.join(projectPath, 'src', 'main.ts');
+    if (fs.existsSync(mainTsPath)) {
+      let mainTsContent = fs.readFileSync(mainTsPath, 'utf-8');
+      mainTsContent = mainTsContent.replace(/\.setTitle\('Kuli Digital Standard API'\)/g, `.setTitle('${finalProjectName} API')`);
+      mainTsContent = mainTsContent.replace(/\.setDescription\('Kuli Digital NestJS Backend API Documentation'\)/g, `.setDescription('${finalProjectName} Backend API Documentation')`);
+      fs.writeFileSync(mainTsPath, mainTsContent);
     }
     
     configSpinner.succeed('Project details configured successfully.');
