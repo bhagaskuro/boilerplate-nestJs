@@ -24,20 +24,20 @@ async function run() {
     {
       type: 'input',
       name: 'projectName',
-      message: 'Nama Project (atau . untuk folder saat ini):',
+      message: 'Project Name (or . for current directory):',
       default: argProjectName || 'my-nestjs-app',
       when: !argProjectName,
     },
     {
       type: 'input',
       name: 'database',
-      message: 'Nama Database PostgreSQL:',
+      message: 'PostgreSQL Database Name:',
       default: 'kulidigital_db',
     },
     {
       type: 'confirm',
       name: 'skipInstall',
-      message: 'Lewati instalasi package (npm install)?',
+      message: 'Skip package installation (npm install)?',
       default: false,
     },
   ]);
@@ -49,37 +49,37 @@ async function run() {
   if (projectName === '.') {
     const files = fs.readdirSync(currentPath).filter(f => !f.startsWith('.git'));
     if (files.length > 0) {
-      console.log(chalk.red('\n❌ Folder saat ini tidak kosong! Harap jalankan di folder kosong.\n'));
+      console.log(chalk.red('\n❌ Current directory is not empty! Please run in an empty directory.\n'));
       process.exit(1);
     }
   }
 
   // 2. Salin Template
-  const copySpinner = ora('Membuat struktur project...').start();
+  const copySpinner = ora('Generating project structure...').start();
   try {
     const templateDir = path.join(__dirname, '../template');
     
-    // Copy seluruh isi folder template ke project tujuan
+    // Copy template contents to the target project directory
     fs.cpSync(templateDir, projectPath, { recursive: true });
     
-    // Rename gitignore menjadi .gitignore (krn NPM mengabaikan .gitignore saat publish)
+    // Rename gitignore to .gitignore (NPM ignores .gitignore during publish)
     const gitignorePath = path.join(projectPath, 'gitignore');
     if (fs.existsSync(gitignorePath)) {
       fs.renameSync(gitignorePath, path.join(projectPath, '.gitignore'));
     }
 
-    copySpinner.succeed('Struktur project berhasil dibuat.');
+    copySpinner.succeed('Project structure generated successfully.');
   } catch (error) {
-    copySpinner.fail('Gagal menyalin struktur template.');
+    copySpinner.fail('Failed to generate project structure.');
     console.error(error.message);
     process.exit(1);
   }
 
-  // Masuk ke folder project
+  // Navigate to project directory
   process.chdir(projectPath);
 
   // 3. Setup .env
-  const envSpinner = ora('Menyiapkan file .env...').start();
+  const envSpinner = ora('Configuring environment variables...').start();
   try {
     const envExamplePath = path.join(projectPath, '.env.example');
     const envPath = path.join(projectPath, '.env');
@@ -91,36 +91,36 @@ async function run() {
       envContent = envContent.replace(/APP_NAME=my-app/g, `APP_NAME=${projectName === '.' ? path.basename(currentPath) : projectName}`);
       
       fs.writeFileSync(envPath, envContent);
-      envSpinner.succeed('File .env berhasil dibuat.');
+      envSpinner.succeed('.env file created successfully.');
     } else {
-      envSpinner.warn('File .env.example tidak ditemukan, lewati setup .env.');
+      envSpinner.warn('.env.example not found, skipping .env setup.');
     }
   } catch (error) {
-    envSpinner.fail('Gagal menyiapkan file .env.');
+    envSpinner.fail('Failed to configure .env file.');
   }
   
-  // 4. Inisialisasi Git
+  // 4. Initialize Git
   try {
     execSync('git init', { stdio: 'ignore' });
   } catch (e) {
-    // Abaikan jika user tidak punya git terinstall
+    // Ignore if git is not installed
   }
 
   // 5. Install Dependencies
   if (!answers.skipInstall) {
-    const installSpinner = ora(`Menginstal dependencies menggunakan npm... (ini butuh waktu beberapa menit)`).start();
+    const installSpinner = ora(`Installing dependencies using npm... (this may take a few minutes)`).start();
     try {
       execSync(`npm install`, { stdio: 'ignore' });
-      installSpinner.succeed('Dependencies berhasil diinstal.');
+      installSpinner.succeed('Dependencies installed successfully.');
     } catch (error) {
-      installSpinner.fail('Gagal menginstal dependencies.');
-      console.log(chalk.yellow('\nKamu bisa menginstalnya secara manual nanti.'));
+      installSpinner.fail('Failed to install dependencies.');
+      console.log(chalk.yellow('\nYou can install them manually later.'));
     }
   }
 
   // 6. Success Message
-  console.log(chalk.green.bold('\n✅ Project Berhasil Dibuat!\n'));
-  console.log(chalk.white('Langkah selanjutnya:'));
+  console.log(chalk.green.bold('\n✅ Project successfully created!\n'));
+  console.log(chalk.white('Next steps:'));
   
   if (projectName !== '.') {
     console.log(chalk.cyan(`  cd ${projectName}`));
