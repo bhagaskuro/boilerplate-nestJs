@@ -18,6 +18,8 @@ async function run() {
   console.log(chalk.cyan.bold('\n🚀 Kuli Digital NestJS Boilerplate Generator\n'));
 
   const argProjectName = process.argv[2];
+  const isCurrentDirArg = argProjectName === '.';
+  const defaultName = isCurrentDirArg ? path.basename(currentPath) : (argProjectName || 'my-nestjs-app');
 
   // 1. Tanya Project Name
   const { projectName } = await inquirer.prompt([
@@ -25,11 +27,13 @@ async function run() {
       type: 'input',
       name: 'projectName',
       message: 'Project Name:',
-      default: argProjectName === '.' ? '.' : (argProjectName || 'my-nestjs-app'),
+      default: defaultName,
     }
   ]);
 
-  const projectPath = projectName === '.' ? currentPath : path.join(currentPath, projectName);
+  const isCurrentDir = isCurrentDirArg || projectName === '.';
+  const projectPath = isCurrentDir ? currentPath : path.join(currentPath, projectName);
+  const finalProjectName = projectName === '.' ? path.basename(currentPath) : projectName;
 
   // 2. Cek apakah folder kosong (Overwrite Check)
   if (fs.existsSync(projectPath)) {
@@ -57,7 +61,7 @@ async function run() {
       type: 'input',
       name: 'database',
       message: 'PostgreSQL Database Name:',
-      default: projectName === '.' || !projectName ? 'kulidigital_db' : `${projectName}_db`,
+      default: `${finalProjectName}_db`,
     },
     {
       type: 'confirm',
@@ -115,8 +119,6 @@ async function run() {
   // 4. Update package.json & README.md
   const configSpinner = ora('Configuring project details...').start();
   try {
-    const finalProjectName = projectName === '.' ? path.basename(currentPath) : projectName;
-    
     // Update package.json
     const pkgPath = path.join(projectPath, 'package.json');
     if (fs.existsSync(pkgPath)) {
