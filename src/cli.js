@@ -19,33 +19,19 @@ async function run() {
 
   const argProjectName = process.argv[2];
 
-  // 1. Tanya-tanya
-  const answers = await inquirer.prompt([
+  // 1. Tanya Project Name
+  const { projectName } = await inquirer.prompt([
     {
       type: 'input',
       name: 'projectName',
       message: 'Project Name (or . for current directory):',
-      default: argProjectName || 'my-nestjs-app',
-      when: !argProjectName,
-    },
-    {
-      type: 'input',
-      name: 'database',
-      message: 'PostgreSQL Database Name:',
-      default: 'kulidigital_db',
-    },
-    {
-      type: 'confirm',
-      name: 'skipInstall',
-      message: 'Skip package installation (npm install)?',
-      default: false,
-    },
+      default: argProjectName === '.' ? '.' : (argProjectName || 'my-nestjs-app'),
+    }
   ]);
 
-  const projectName = argProjectName || answers.projectName;
   const projectPath = projectName === '.' ? currentPath : path.join(currentPath, projectName);
 
-  // Check if target directory is empty
+  // 2. Cek apakah folder kosong (Overwrite Check)
   if (fs.existsSync(projectPath)) {
     const files = fs.readdirSync(projectPath).filter(f => !f.startsWith('.git'));
     if (files.length > 0) {
@@ -64,6 +50,22 @@ async function run() {
       }
     }
   }
+
+  // 3. Tanya Database & Setup
+  const answers = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'database',
+      message: 'PostgreSQL Database Name:',
+      default: projectName === '.' || !projectName ? 'kulidigital_db' : `${projectName}_db`,
+    },
+    {
+      type: 'confirm',
+      name: 'skipInstall',
+      message: 'Skip package installation (npm install)?',
+      default: false,
+    },
+  ]);
 
   // 2. Salin Template
   const copySpinner = ora('Generating project structure...').start();
