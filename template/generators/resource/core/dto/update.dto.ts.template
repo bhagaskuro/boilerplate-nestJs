@@ -1,0 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
+import { Create__SINGULAR_PASCAL__Dto } from './create-__SINGULAR_KEBAB__.dto';
+
+export class Update__SINGULAR_PASCAL__Dto extends PartialType(Create__SINGULAR_PASCAL__Dto) {}

@@ -1,0 +1,4 @@
+export class __SINGULAR_PASCAL__Entity {
+  // TODO: Sesuaikan dengan field model Prisma __SINGULAR_PASCAL__.
+  id!: number;
+}

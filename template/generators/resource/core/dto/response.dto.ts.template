@@ -1,0 +1,5 @@
+export interface __SINGULAR_PASCAL__ResponseDto {
+  // TODO: Definisikan field response sesuai model Prisma __SINGULAR_PASCAL__.
+  id: number;
+  [key: string]: unknown;
+}

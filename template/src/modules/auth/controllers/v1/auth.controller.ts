@@ -5,6 +5,7 @@ import { AuthService } from '../../auth.service';
 import { LoginDto } from '../../core/dto/login.dto';
 import { RegisterDto } from '../../core/dto/register.dto';
 import { AuthResponseDto } from '../../core/dto/auth-response.dto';
+import { LoginResponseDto } from '../../core/dto/login-response.dto';
 import { Public } from '@common/decorators/public.decorator';
 import { ApiSuccessResponse } from '@common/decorators/api-response.decorator';
 import { JwtAuthGuard } from '@common/guards/jwt-auth.guard';
@@ -20,12 +21,12 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'User login' })
-  @ApiSuccessResponse(AuthResponseDto)
+  @ApiSuccessResponse(LoginResponseDto)
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthResponseDto> {
+  ): Promise<LoginResponseDto> {
     const authResponse = await this.authService.login(loginDto);
     res.cookie('Authentication', authResponse.access_token, {
       httpOnly: true,
@@ -33,7 +34,7 @@ export class AuthController {
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
-    return authResponse;
+    return authResponse.user;
   }
 
   @Public()

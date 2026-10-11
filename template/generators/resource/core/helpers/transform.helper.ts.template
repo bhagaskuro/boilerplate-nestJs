@@ -1,0 +1,6 @@
+export class __SINGULAR_KEBAB__Transform {
+  static toResponse<T extends Record<string, unknown>>(record: T) {
+    // TODO: Hilangkan field sensitif (misalnya password/hash) sebelum mengembalikan response.
+    return record;
+  }
+}

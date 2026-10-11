@@ -1,0 +1,48 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { __RESOURCE_PASCAL__Service } from '../../__RESOURCE_KEBAB__.service';
+import { Create__SINGULAR_PASCAL__Dto } from '../../core/dto/create-__SINGULAR_KEBAB__.dto';
+import { Update__SINGULAR_PASCAL__Dto } from '../../core/dto/update-__SINGULAR_KEBAB__.dto';
+import { __SINGULAR_KEBAB__QueryDto } from '../../core/dto/__SINGULAR_KEBAB__-query.dto';
+
+@Controller('v1/__RESOURCE_KEBAB__')
+export class __RESOURCE_PASCAL__Controller {
+  constructor(private readonly service: __RESOURCE_PASCAL__Service) {}
+
+  @Post()
+  create(@Body() dto: Create__SINGULAR_PASCAL__Dto) {
+    return this.service.create(dto);
+  }
+
+  @Get()
+  findAll(@Query() query: __SINGULAR_KEBAB__QueryDto) {
+    return this.service.findAll(query);
+  }
+
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.service.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: Update__SINGULAR_PASCAL__Dto,
+  ) {
+    return this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.service.remove(id);
+  }
+}

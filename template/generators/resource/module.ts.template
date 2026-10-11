@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { PrismaModule } from '../../common/prisma/prisma.module';
+import { __RESOURCE_PASCAL__Controller } from './controllers/v1/__RESOURCE_KEBAB__.controller';
+import { __RESOURCE_PASCAL__Service } from './__RESOURCE_KEBAB__.service';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [__RESOURCE_PASCAL__Controller],
+  providers: [__RESOURCE_PASCAL__Service],
+  exports: [__RESOURCE_PASCAL__Service],
+})
+export class __RESOURCE_PASCAL__Module {}
